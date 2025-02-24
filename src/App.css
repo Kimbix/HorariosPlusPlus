@@ -1,38 +1,190 @@
-.App {
-  text-align: center;
+:root {
+	--background: #35374B;
+	--analogous-1: #344955;
+	--analogous-2: #50727B;
+	--analogous-3: #78A083;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.main-container {
+	display: static;
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.split-30-70 {
+	display: flex;
+	flex-flow: row nowrap;
+	height: 100%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.split-30-70>*:nth-child(1) { flex-basis: 30%; }
+.split-30-70>*:nth-child(2) { flex-basis: 70%; }
+
+.up-down-flex {
+	display: flex;
+	flex-flow: column nowrap;
 }
 
-.App-link {
-  color: #61dafb;
+.left-right-flex {
+	display: flex;
+	flex-flow: row nowrap;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.background {
+	background-color: var(--background);
+}
+
+.background-analogous-1 {
+	background-color: var(--analogous-1);
+}
+
+.button-analogous-1 {
+	background-color: var(--analogous-1);
+	border: none;
+}
+
+
+.button-analogous-1 {
+	background-color: var(--analogous-1);
+	border: none;
+	border-radius: 15px;
+	border-right: 4px solid #000000;
+	border-bottom: 4px solid #000000;
+	transition: border 100ms;
+}
+
+.button-analogous-1:hover {
+	border-right: 3px solid #000000;
+	border-bottom: 3px solid #000000;
+}
+
+.button-analogous-1:active {
+	border-right: 0 solid #000000;
+	border-bottom: 0 solid #000000;
+}
+
+.background-analogous-2 {
+	background-color: var(--analogous-2);
+}
+
+.button-analogous-2 {
+	background-color: var(--analogous-2);
+	border: none;
+	border-radius: 15px;
+	border-right: 4px solid #000000;
+	border-bottom: 4px solid #000000;
+	transition: border 100ms;
+}
+
+.button-analogous-2:hover {
+	border-right: 3px solid #000000;
+	border-bottom: 3px solid #000000;
+}
+
+.button-analogous-2:active {
+	border-right: 0 solid #000000;
+	border-bottom: 0 solid #000000;
+}
+
+.background-analogous-3 {
+	background-color: var(--analogous-3);
+}
+
+.button-analogous-3 {
+	background-color: var(--analogous-3);
+	border: none;
+	border-radius: 15px;
+	border-right: 4px solid #000000;
+	border-bottom: 4px solid #000000;
+	transition: border 100ms;
+}
+
+.button-analogous-3:hover {
+	border-right: 3px solid #000000;
+	border-bottom: 3px solid #000000;
+}
+
+.button-analogous-3:active {
+	border-right: 0 solid #000000;
+	border-bottom: 0 solid #000000;
+}
+
+.floating-container {
+	padding: 8px;
+	border-radius: 15px;
+	border-right: 4px solid #000000;
+	border-bottom: 4px solid #000000;
+}
+
+.padding-mid {
+	padding: 10px;
+}
+
+.write-container {
+	border-bottom: 2px solid white;
+	color: white;
+}
+
+.write-input {
+	background: none;
+	border: none;
+	color: white;
+}
+
+.write-input:focus {
+	outline: none;
+}
+
+.flexpand {
+	flex-grow: 1;
+}
+
+.flex-space-around {
+	justify-content: space-around;
+}
+
+.max-size-75 {
+	max-width: 75px;
+}
+
+.max-size-25 {
+	max-width: 25px;
+}
+
+.min-size-75 {
+	min-width: 100px;
+}
+
+.gap-10 {
+	gap: 10px;
+}
+
+.scrollable {
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.sides-padding {
+	padding: 0 5px;
+}
+
+.svg-icon {
+	filter: invert(98%) sepia(82%) saturate(444%) hue-rotate(208deg) brightness(113%) contrast(100%);
+}
+
+.strong-input {
+	font-weight: bolder;
+	font-size: 24px;
+}
+
+.remove-button {
+	background: none;
+	border: none;
+	outline: none;
+	transition: all 100ms;
+}
+
+.remove-button:hover {
+	transform: translateY(-2px); 
 }

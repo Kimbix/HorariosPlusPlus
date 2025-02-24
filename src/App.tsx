@@ -1,0 +1,283 @@
+import './App.css';
+import React from "react";
+
+// @ts-ignore
+import edit_icon from "./svg/edit-icon.svg";
+// @ts-ignore
+import dropdown_icon from "./svg/dropdown-icon.svg";
+// @ts-ignore
+import trash_icon from "./svg/trash-icon.svg";
+// @ts-ignore
+import eye_icon from "./svg/eye-icon.svg";
+
+interface Class {
+	startHour: number
+	startMinute: number
+	endHour: number
+	endMinute: number
+	day: number
+}
+
+interface Section {
+	code: string
+	teacher: string
+	classes: Class[]
+}
+
+interface Course {
+	name: string
+	sections: Section[]
+}
+
+function Class({ clasObject, removeCallback }: { clasObject: Class, removeCallback: Function }) {
+	const [clas, setClas] = React.useState(clasObject);
+
+	function validateHour() {
+		const start_mins = clasObject.startHour * 60 + clasObject.startMinute
+		const end_mins = clasObject.endHour * 60 + clasObject.endMinute
+
+		if (start_mins >= end_mins) {
+			endHourEdit(String(clasObject.startHour + (clasObject.startMinute === 55 ? 1 : 0)))
+			endMinuteEdit(String(clasObject.startMinute === 55 ? 0 : (clasObject.startMinute + 5)))
+		}
+	}
+
+	function startHourEdit(val: String) {
+		if (isNaN(Number(val))) return
+		if (val.length > 2) return
+
+		const newClas: Class = { ...clasObject };
+		clasObject.startHour = Number(val)
+		newClas.startHour = Number(val)
+		setClas(newClas)
+	}
+
+	function startHourValidate(val: String) {
+		const num = Math.min(Math.max(Number(val), 8), 19)
+		const newClas: Class = { ...clasObject };
+		clasObject.startHour = num
+		newClas.startHour = num
+		setClas(newClas)
+
+		validateHour()
+	}
+
+	function startMinuteEdit(val: String) {
+		if (isNaN(Number(val))) return
+		if (val.length > 2) return
+
+		const newClas: Class = { ...clasObject };
+		clasObject.startMinute = Number(val)
+		newClas.startMinute = Number(val)
+		setClas(newClas)
+	}
+
+	function startMinuteValidate(val: String) {
+		const num = Math.min(Math.max(Number(val), 0), clasObject.startHour === 20 ? 0 : 55)
+		const newClas: Class = { ...clasObject };
+		clasObject.startMinute = Math.floor(num / 5) * 5
+		newClas.startMinute = Math.floor(num / 5) * 5
+		setClas(newClas)
+
+		validateHour()
+	}
+
+	function endHourEdit(val: String) {
+		if (isNaN(Number(val))) return
+		if (val.length > 2) return
+
+		const newClas: Class = { ...clasObject };
+		clasObject.endHour = Number(val)
+		newClas.endHour = Number(val)
+		setClas(newClas)
+	}
+
+	function endHourValidate(val: String) {
+		const num = Math.min(Math.max(Number(val), clasObject.startHour), 20)
+		const newClas: Class = { ...clasObject };
+		clasObject.endHour = num
+		newClas.endHour = num
+		setClas(newClas)
+
+		validateHour()
+	}
+
+	function endMinuteEdit(val: String) {
+		if (isNaN(Number(val))) return
+		if (val.length > 2) return
+
+		const newClas: Class = { ...clasObject };
+		clasObject.endMinute = Number(val)
+		newClas.endMinute = Number(val)
+		setClas(newClas)
+	}
+
+	function endMinuteValidate(val: String) {
+		const num = Math.min(
+			Math.max(Number(val), clasObject.endHour === clasObject.startHour ? clasObject.startMinute + 5 : 0),
+			clasObject.endHour === 20 ? 0 : 55)
+		const newClas: Class = { ...clasObject };
+		clasObject.endMinute = Math.floor(num / 5) * 5
+		newClas.endMinute = Math.floor(num / 5) * 5
+		setClas(newClas)
+
+		validateHour()
+	}
+
+	return <div className="floating-container background-analogous-3 flex-space-around left-right-flex gap-10">
+		<div className="left-right-flex write-container">
+			<input value={clas.day} className="max-size-75 write-input" placeholder="Day" />
+			<img className="svg-icon" width="16px" src={dropdown_icon} />
+		</div>
+		<div className="left-right-flex write-container">
+			<input value={clas.startHour} onBlur={e => startHourValidate(e.target.value)} onChange={e => startHourEdit(e.target.value)} className="max-size-25 write-input" placeholder="HH" />
+			<input value={clas.startMinute} onBlur={e => startMinuteValidate(e.target.value)} onChange={e => startMinuteEdit(e.target.value)} className="max-size-25 write-input" placeholder="MM" />
+			<img className="svg-icon" width="16px" src={dropdown_icon} />
+		</div>
+		<div className="left-right-flex write-container">
+			<input value={clas.endHour} onBlur={e => endHourValidate(e.target.value)} onChange={e => endHourEdit(e.target.value)} className="max-size-25 write-input" placeholder="HH" />
+			<input value={clas.endMinute} onBlur={e => endMinuteValidate(e.target.value)} onChange={e => endMinuteEdit(e.target.value)} className="max-size-25 write-input" placeholder="MM" />
+			<img className="svg-icon" width="16px" src={dropdown_icon} />
+		</div>
+		<button className="remove-button" onClick={removeCallback} >
+			<img className="svg-icon" width="16px" src={trash_icon} />
+		</button>
+	</div >
+}
+
+function Section({ sectionObject, removeCallback }: { sectionObject: Section, removeCallback: Function }) {
+	const [section, setSection] = React.useState(sectionObject);
+
+	function codeEdit(val: string) {
+		const newSection: Section = { ...sectionObject };
+		sectionObject.code = val
+		newSection.code = val
+		setSection(newSection)
+	}
+
+	function teacherEdit(val: string) {
+		const newSection: Section = { ...sectionObject };
+		sectionObject.teacher = val
+		newSection.teacher = val
+		setSection(newSection)
+	}
+
+	function classAdd() {
+		const newSection: Section = { ...sectionObject };
+		sectionObject.classes.push({ startHour: 0, startMinute: 0, endHour: 0, endMinute: 0, day: 1 })
+		newSection.classes = sectionObject.classes
+		setSection(newSection)
+	}
+
+	function classRemove(clas: Class) {
+		const newSection: Section = { ...sectionObject };
+		sectionObject.classes.splice(sectionObject.classes.findIndex(v => v === clas), 1)
+		newSection.classes = sectionObject.classes
+		setSection(newSection)
+	}
+
+	return <div className="up-down-flex background-analogous-2 floating-container gap-10">
+		<div className="left-right-flex gap-10">
+			<div className="write-container min-size-75"><b>Class Code</b></div>
+			<div className="flexpand left-right-flex write-container">
+				<input value={section.code} onChange={e => codeEdit(e.target.value)} placeholder="Class Code" type="text" className="flexpand write-input" />
+				<img className="svg-icon sides-padding" width="16px" src={edit_icon} />
+			</div>
+			<button className="remove-button" onClick={removeCallback}>
+				<img className="svg-icon" width="16px" src={eye_icon} />
+			</button>
+		</div>
+
+		<div className="left-right-flex gap-10">
+			<div className="write-container min-size-75"><b>Teacher</b></div>
+			<div className="flexpand left-right-flex write-container">
+				<input value={section.teacher} onChange={e => teacherEdit(e.target.value)} placeholder="Teacher's Name" type="text" className="flexpand write-input" />
+				<img className="svg-icon sides-padding" width="16px" src={edit_icon} />
+			</div>
+			<button className="remove-button" onClick={removeCallback}>
+				<img className="svg-icon" width="16px" src={trash_icon} />
+			</button>
+		</div>
+
+		<div className="up-down-flex gap-10">
+			{section.classes.map(c => <Class clasObject={c} removeCallback={_ => classRemove(c)} />)}
+		</div>
+		<button onClick={classAdd} className="button-analogous-3">+</button>
+	</div>
+}
+
+function Course({ courseObject, removeCallback }: { courseObject: Course, removeCallback: Function }) {
+	const [course, setCourse] = React.useState(courseObject);
+
+	function courseNameEdit(val: string) {
+		const newCourse: Course = { ...courseObject };
+		courseObject.name = val
+		newCourse.name = val
+		setCourse(newCourse)
+	}
+
+	function newSection() {
+		const newCourse: Course = { ...courseObject };
+		courseObject.sections.push({ code: "", teacher: "", classes: [] })
+		newCourse.sections = courseObject.sections
+		setCourse(newCourse)
+	}
+
+	function sectionRemove(section: Section) {
+		const newCourse: Course = { ...courseObject };
+		courseObject.sections.splice(courseObject.sections.findIndex(v => v === section), 1)
+		newCourse.sections = courseObject.sections
+		setCourse(newCourse)
+	}
+
+	return <div className="up-down-flex gap-10 background-analogous-1 floating-container">
+		<div className="left-right-flex gap-10">
+			<div className="flexpand left-right-flex write-container">
+				<input value={course.name} onChange={e => courseNameEdit(e.target.value)} placeholder="Course Name" type="text" className="flexpand write-input strong-input" />
+				<img className="svg-icon sides-padding" width="16px" src={edit_icon} />
+			</div>
+			<button className="remove-button" onClick={removeCallback}>
+				<img className="svg-icon" width="16px" src={eye_icon} />
+			</button>
+			<button className="remove-button" onClick={removeCallback}>
+				<img className="svg-icon" width="16px" src={trash_icon} />
+			</button>
+		</div>
+		<div className="up-down-flex gap-10">
+			{course.sections.map(s => <Section sectionObject={s} removeCallback={_ => sectionRemove(s)} />)}
+		</div>
+		<button onClick={newSection} className="button-analogous-2">+</button>
+	</div>
+}
+
+function App() {
+	const [courses, setCourses]: [Course[], Function] = React.useState(() => [] as Course[]);
+
+	function newCourse() {
+		const c: Course = { name: "", sections: [] };
+		setCourses(courses.concat([c]));
+	}
+
+	function removeCourse(course: Course) {
+		const newCourses = courses.map(x => x)
+		newCourses.splice(courses.findIndex((v: Course) => v === course), 1)
+		setCourses(newCourses);
+	}
+
+	return <div className="main-container">
+		<div className="split-30-70">
+			<div className="up-down-flex background">
+				<div className="up-down-flex scrollable padding-mid gap-10">
+					{courses.map((c: Course) => <Course courseObject={c} removeCallback={_ => removeCourse(c)} />)}
+					<button onClick={newCourse} className="button-analogous-1">+</button>
+				</div>
+				<div>
+					<button onClick={_ => console.log(courses)} >Generate</button>
+				</div>
+			</div>
+			<div className="background">World!</div>
+		</div>
+	</div>
+}
+
+export default App;
