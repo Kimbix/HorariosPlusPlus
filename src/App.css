@@ -188,3 +188,50 @@
 .remove-button:hover {
 	transform: translateY(-2px); 
 }
+
+.schedule {
+	display: grid;
+	grid-auto-flow: column;
+	grid-template-columns:  repeat(8, 1fr);
+	grid-template-rows:  repeat(156, 0.1fr);
+	background: var(--analogous-2);
+	border-radius: 15px;
+	padding: 10px;
+}
+
+.schedule-numbers:nth-child(2n + 1), .schedule-days-even {
+	background: rgba(255, 255, 255, 0.05);
+}
+
+.schedule-numbers:nth-child(2n), .schedule-days-odd {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.color-picker {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	border: none;
+	outline: none;
+	background: none;
+	width: 25px;
+	height: 25px;
+	align-self: center;
+}
+
+.color-picker::-webkit-color-swatch,
+.color-picker::-moz-color-swatch {
+	border-radius: 100%;
+	border: none;
+}
+
+.generated-container {
+	height: 100vh;
+	background: var(--analogous-1);
+}
+
+.grid-2x2 {
+	display: grid;
+	grid-template-columns:  repeat(2, 1fr);
+	grid-template-rows:  repeat(2, 0.1fr);
+}
