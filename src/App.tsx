@@ -288,7 +288,7 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 		</>
 	}
 
-	return <div className="schedule">
+	return <div className="floating-container schedule">
 		<div style={{ "grid-column-start": "1", "grid-row": "span 12" }}></div>
 		{nums.map(x => <div className="schedule-numbers" style={{ "grid-column-start": "1", "grid-row": "span 12" }}>{x}</div>)}
 		{
