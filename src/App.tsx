@@ -261,13 +261,13 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 
 	function sectionsOfDay(index: number) {
 		const clasesToday: Class[] = []
-		const colors: String[] = []
+		const scheduleSections: ScheduleSection[] = []
 
 		for (const s of sections)
 			for (const c of s.classes) {
 				if (c.day === index + 1) {
 					clasesToday.push(c)
-					colors.push(s.color)
+					scheduleSections.push(s)
 				}
 			}
 
@@ -279,13 +279,19 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 				const start = ((c.startHour - 6) * 12 + 1 + (c.startMinute) / 5).toString()
 				const end = ((c.endHour - 6) * 12 + 1 + (c.endMinute) / 5).toString()
 				return <div
-					className="schedule-element"
+					className="schedule-element tooltip"
 					style={{
 						"grid-column-start": (index + 2).toString(),
 						"grid-row-start": start,
 						"grid-row-end": end,
-						"background": colors[i],
+						"background": scheduleSections[i].color,
+						"position": "relative"
 					}}>
+					<div className="tooltiptext" >
+						<div>Course: {scheduleSections[i].courseName}</div>
+						<div>Code: {scheduleSections[i].code}</div>
+						<div>Teacher: {scheduleSections[i].teacher}</div>
+					</div>
 				</div >
 			})}
 		</>
