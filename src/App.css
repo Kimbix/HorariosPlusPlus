@@ -193,7 +193,7 @@
 	display: grid;
 	grid-auto-flow: column;
 	grid-template-columns:  repeat(8, 1fr);
-	grid-template-rows:  repeat(156, 0.1fr);
+	grid-template-rows:  repeat(180, 0.1fr);
 	background: var(--analogous-2);
 	border-radius: 15px;
 	padding: 10px;

@@ -15,6 +15,9 @@ import eye_icon from "./svg/eye-icon.svg";
 
 
 function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCallback: Function }) {
+	const minHour = 7
+	const maxHour = 22
+
 	const [clas, setClas] = React.useState(clasObject);
 
 	function validateHour() {
@@ -38,7 +41,7 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 	}
 
 	function startHourValidate(val: String) {
-		const num = Math.min(Math.max(Number(val), 8), 19)
+		const num = Math.min(Math.max(Number(val), minHour), maxHour - 1)
 		const newClas: Class = { ...clasObject };
 		clasObject.startHour = num
 		newClas.startHour = num
@@ -58,7 +61,7 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 	}
 
 	function startMinuteValidate(val: String) {
-		const num = Math.min(Math.max(Number(val), 0), clasObject.startHour === 20 ? 0 : 55)
+		const num = Math.min(Math.max(Number(val), 0), clasObject.startHour === maxHour ? 0 : 55)
 		const newClas: Class = { ...clasObject };
 		clasObject.startMinute = Math.floor(num / 5) * 5
 		newClas.startMinute = Math.floor(num / 5) * 5
@@ -78,7 +81,7 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 	}
 
 	function endHourValidate(val: String) {
-		const num = Math.min(Math.max(Number(val), clasObject.startHour), 20)
+		const num = Math.min(Math.max(Number(val), clasObject.startHour), maxHour)
 		const newClas: Class = { ...clasObject };
 		clasObject.endHour = num
 		newClas.endHour = num
@@ -100,7 +103,7 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 	function endMinuteValidate(val: String) {
 		const num = Math.min(
 			Math.max(Number(val), clasObject.endHour === clasObject.startHour ? clasObject.startMinute + 5 : 0),
-			clasObject.endHour === 20 ? 0 : 55)
+			clasObject.endHour === maxHour ? 0 : 55)
 		const newClas: Class = { ...clasObject };
 		clasObject.endMinute = Math.floor(num / 5) * 5
 		newClas.endMinute = Math.floor(num / 5) * 5
@@ -253,7 +256,7 @@ function CourseComp({ courseObject, removeCallback }: { courseObject: Course, re
 }
 
 function Schedule({ sections }: { sections: ScheduleSection[] }) {
-	const nums = ["8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"];
+	const nums = ["7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"];
 	const days = ["M", "T", "W", "T", "F", "S", "S"]
 
 	function sectionsOfDay(index: number) {
@@ -273,8 +276,8 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 
 		return <>
 			{clasesToday.map((c, i) => {
-				const start = ((c.startHour - 7) * 12 + 1 + (c.startMinute) / 5).toString()
-				const end = ((c.endHour - 7) * 12 + 1 + (c.endMinute) / 5).toString()
+				const start = ((c.startHour - 6) * 12 + 1 + (c.startMinute) / 5).toString()
+				const end = ((c.endHour - 6) * 12 + 1 + (c.endMinute) / 5).toString()
 				return <div
 					className="schedule-element"
 					style={{
