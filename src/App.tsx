@@ -346,6 +346,16 @@ function App() {
 		setGenerated(gen)
 	}
 
+	function exportConfiguration() {
+		navigator.clipboard.writeText(JSON.stringify(courses))
+	}
+
+	function importConfiguration() {
+		const courses: string = prompt("Paste the configuration json") ?? "[]"
+		const coursesObject: Course[] = JSON.parse(courses)
+		setCourses(coursesObject)
+	}
+
 	return <div className="main-container">
 		<div className="split-30-70">
 			<div className="up-down-flex background">
@@ -355,6 +365,8 @@ function App() {
 				</div>
 				<div>
 					<button onClick={generate} >Generate</button>
+					<button onClick={exportConfiguration} >Export Configuration</button>
+					<button onClick={importConfiguration} >Import Configuration</button>
 				</div>
 			</div>
 			<div className="generated-container">
