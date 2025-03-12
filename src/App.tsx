@@ -259,6 +259,15 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 	const nums = ["7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"];
 	const days = ["M", "T", "W", "T", "F", "S", "S"]
 
+	function copySectionsList() {
+		let res = ""
+		for (const s of sections) {
+			res = res.concat(s.courseName, " | NRC: ", s.code, " | Teacher: ", s.teacher)
+			res = res.concat("\n")
+		}
+		navigator.clipboard.writeText(res)
+	}
+
 	function sectionsOfDay(index: number) {
 		const clasesToday: Class[] = []
 		const scheduleSections: ScheduleSection[] = []
@@ -297,20 +306,23 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 		</>
 	}
 
-	return <div className="floating-container schedule">
-		<div style={{ "grid-column-start": "1", "grid-row": "span 12" }}></div>
-		{nums.map(x => <div className="schedule-numbers" style={{ "grid-column-start": "1", "grid-row": "span 12" }}>{x}</div>)}
-		{
-			days.map((day, dayIndex) =>
-				<>
-					<div
-						className={"schedule-days-" + (dayIndex % 2 ? "odd" : "even")}
-						style={{ "grid-column-start": (dayIndex + 2).toString(), "grid-row": "span 12" }}
-					>{day}</div>
-					{sectionsOfDay(dayIndex)}
-				</>
-			)
-		}
+	return <div className="floating-container background-analogous-2">
+		<div className="schedule">
+			<div style={{ "grid-column-start": "1", "grid-row": "span 12" }}></div>
+			{nums.map(x => <div className="schedule-numbers" style={{ "grid-column-start": "1", "grid-row": "span 12" }}>{x}</div>)}
+			{
+				days.map((day, dayIndex) =>
+					<>
+						<div
+							className={"schedule-days-" + (dayIndex % 2 ? "odd" : "even")}
+							style={{ "grid-column-start": (dayIndex + 2).toString(), "grid-row": "span 12" }}
+						>{day}</div>
+						{sectionsOfDay(dayIndex)}
+					</>
+				)
+			}
+		</div>
+		<button className="button-analogous-3" onClick={copySectionsList} >Copy!</button>
 	</div>
 }
 
