@@ -20,15 +20,7 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 
 	const [clas, setClas] = React.useState(clasObject);
 
-	function validateHour() {
-		const start_mins = clasObject.startHour * 60 + clasObject.startMinute
-		const end_mins = clasObject.endHour * 60 + clasObject.endMinute
-
-		if (start_mins >= end_mins) {
-			endHourEdit(String(clasObject.startHour + (clasObject.startMinute === 55 ? 1 : 0)))
-			endMinuteEdit(String(clasObject.startMinute === 55 ? 0 : (clasObject.startMinute + 5)))
-		}
-	}
+	const isValid = (): boolean => clasObject.startHour * 60 + clasObject.startMinute < clasObject.endHour * 60 + clasObject.endMinute
 
 	function startHourEdit(val: String) {
 		if (isNaN(Number(val))) return
@@ -46,8 +38,6 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 		clasObject.startHour = num
 		newClas.startHour = num
 		setClas(newClas)
-
-		validateHour()
 	}
 
 	function startMinuteEdit(val: String) {
@@ -66,8 +56,6 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 		clasObject.startMinute = Math.floor(num / 5) * 5
 		newClas.startMinute = Math.floor(num / 5) * 5
 		setClas(newClas)
-
-		validateHour()
 	}
 
 	function endHourEdit(val: String) {
@@ -86,8 +74,6 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 		clasObject.endHour = num
 		newClas.endHour = num
 		setClas(newClas)
-
-		validateHour()
 	}
 
 	function endMinuteEdit(val: String) {
@@ -101,15 +87,11 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 	}
 
 	function endMinuteValidate(val: String) {
-		const num = Math.min(
-			Math.max(Number(val), clasObject.endHour === clasObject.startHour ? clasObject.startMinute + 5 : 0),
-			clasObject.endHour === maxHour ? 0 : 55)
+		const num = Math.min(Math.max(Number(val), 0), clasObject.endHour === maxHour ? 0 : 55)
 		const newClas: Class = { ...clasObject };
 		clasObject.endMinute = Math.floor(num / 5) * 5
 		newClas.endMinute = Math.floor(num / 5) * 5
 		setClas(newClas)
-
-		validateHour()
 	}
 
 	function dayEdit(val: String) {
@@ -120,7 +102,6 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 		setClas(newClas)
 	}
 
-
 	function dayValidate(val: String) {
 		const num = Math.min(Math.max(Number(val), 1), 7)
 		const newClas: Class = { ...clasObject };
@@ -129,7 +110,8 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 		setClas(newClas)
 	}
 
-	return <div className="floating-container background-analogous-3 flex-space-around left-right-flex gap-10">
+
+	return <div className={`${isValid() || "invalid-class"} floating-container background-analogous-3 flex-space-around left-right-flex gap-10`}>
 		<div className="left-right-flex write-container">
 			<input value={clas.day} onBlur={e => dayValidate(e.target.value)} onChange={e => dayEdit(e.target.value)} className="max-size-75 write-input" placeholder="Day" />
 			<img className="svg-icon" width="16px" src={dropdown_icon} />

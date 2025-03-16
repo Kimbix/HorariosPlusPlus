@@ -3,6 +3,7 @@
 	--analogous-1: #344955;
 	--analogous-2: #50727B;
 	--analogous-3: #78A083;
+	--error-color: red;
 }
 
 .main-container {
@@ -88,6 +89,7 @@
 }
 
 .background-analogous-3 {
+	transition: all 500ms;
 	background-color: var(--analogous-3);
 }
 
@@ -116,6 +118,7 @@
 	border-right: 4px solid #000000;
 	border-bottom: 4px solid #000000;
 }
+
 
 .padding-mid {
 	padding: 10px;
@@ -253,4 +256,9 @@
 
 .tooltip:hover .tooltiptext {
   visibility: visible;
+}
+
+.invalid-class {
+	transition: all 500ms;
+	background: var(--error-color);
 }

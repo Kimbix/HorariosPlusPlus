@@ -16,6 +16,10 @@ function GenerateSchedules(courses: Course[], total: ScheduleSection[][], curren
 }
 
 function canFit(section: Section, sectionList: ScheduleSection[]): boolean {
+	for (const c of section.classes)
+		if (c.startHour * 60 + c.startMinute >= c.endHour * 60 + c.endMinute)
+			return false
+
 	for (const classf of section.classes) {
 		for (const currentSection of sectionList) {
 			for (const currentClass of currentSection.classes) {
