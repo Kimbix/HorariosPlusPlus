@@ -2,6 +2,12 @@ import './App.css';
 
 import React from "react";
 
+// @ts-ignore
+import { saveAs } from 'file-saver';
+
+// @ts-ignore
+import domtoimage from 'dom-to-image';
+
 import GenerateSchedules from './generate.tsx';
 
 import { Class, Section, Course, ScheduleSection } from './interfaces.tsx';
@@ -316,7 +322,7 @@ function CourseComp({ courseObject, removeCallback }: { courseObject: Course, re
 	</div>
 }
 
-function Schedule({ sections }: { sections: ScheduleSection[] }) {
+function Schedule({ id, sections }: { id: number, sections: ScheduleSection[] }) {
 	const nums = ["7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"];
 	const days = ["M", "T", "W", "T", "F", "S", "S"]
 
@@ -327,6 +333,13 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 			res = res.concat("\n")
 		}
 		navigator.clipboard.writeText(res)
+	}
+
+	function toImage() {
+		const node = document.getElementById("schedule-" + id)
+		domtoimage.toPng(node).then((blob) => {
+			saveAs(blob, "schedule.png")
+		})
 	}
 
 	const [mousePosition, setMousePosition] = React.useState({
@@ -391,7 +404,7 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 	}
 
 	return <div className="floating-container background-analogous-2">
-		<div className="schedule">
+		<div id={"schedule-" + id} className="schedule">
 			<div className="schedule-start" style={{ "grid-column-start": "1", "grid-row": "span 12" }}> . </div>
 			{nums.map(x => <div className="schedule-numbers" style={{ "grid-column-start": "1", "grid-row": "span 12" }} >{x} </div>)}
 			{
@@ -407,6 +420,7 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 			}
 		</div>
 		<button className="button-analogous-3" onClick={copySectionsList} >Copy!</button>
+		<button className="button-analogous-3" onClick={toImage} >Image!</button>
 	</div>
 }
 
@@ -457,7 +471,7 @@ function App() {
 			</div>
 			<div className="generated-container">
 				<div className="grid-2x2">
-					{generated.map(element => <Schedule sections={element} />)}
+					{generated.map((element, idx) => <Schedule id={idx} sections={element} />)}
 				</div>
 			</div>
 		</div>
