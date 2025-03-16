@@ -14,7 +14,7 @@ import trash_icon from "./svg/trash-icon.svg";
 import eye_icon from "./svg/eye-icon.svg";
 
 
-function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCallback: Function }) {
+function ClassComp({ visible, clasObject, removeCallback }: { visible: boolean, clasObject: Class, removeCallback: Function }) {
 	const minHour = 7
 	const maxHour = 22
 
@@ -111,7 +111,7 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 	}
 
 
-	return <div className={`${isValid() || "invalid-class"} floating-container background-analogous-3 flex-space-around left-right-flex gap-10`}>
+	return <div className={`${visible || "not-used-class"} ${isValid() || "invalid-class"} floating-container background-analogous-3 flex-space-around left-right-flex gap-10`}>
 		<div className="left-right-flex write-container">
 			<input value={clas.day} onBlur={e => dayValidate(e.target.value)} onChange={e => dayEdit(e.target.value)} className="max-size-75 write-input" placeholder="Day" />
 			<img className="svg-icon" width="16px" src={dropdown_icon} />
@@ -132,7 +132,7 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 	</div >
 }
 
-function SectionComp({ sectionObject, removeCallback }: { sectionObject: Section, removeCallback: Function }) {
+function SectionComp({ visibleOverride, sectionObject, removeCallback }: { visibleOverride: boolean, sectionObject: Section, removeCallback: Function }) {
 	const [section, setSection] = React.useState(sectionObject);
 
 	function codeEdit(val: string) {
@@ -163,14 +163,27 @@ function SectionComp({ sectionObject, removeCallback }: { sectionObject: Section
 		setSection(newSection)
 	}
 
-	return <div className="up-down-flex background-analogous-2 floating-container gap-10">
+	function visibleToggle() {
+		if (visibleOverride == false) return;
+		const newSection: Section = { ...sectionObject };
+		sectionObject.visible = !sectionObject.visible
+		newSection.visible = newSection.visible
+		setSection(newSection)
+	}
+
+	function isVisible() {
+		if (visibleOverride == false) return false
+		return sectionObject.visible
+	}
+
+	return <div className={`${isVisible() || "not-used-section"} up-down-flex background-analogous-2 floating-container gap-10`}>
 		<div className="left-right-flex gap-10">
 			<div className="write-container min-size-75"><b>Class Code</b></div>
 			<div className="flexpand left-right-flex write-container">
 				<input value={section.code} onChange={e => codeEdit(e.target.value)} placeholder="Class Code" type="text" className="flexpand write-input" />
 				<img className="svg-icon sides-padding" width="16px" src={edit_icon} />
 			</div>
-			<button className="remove-button" onClick={removeCallback}>
+			<button className="remove-button" onClick={visibleToggle}>
 				<img className="svg-icon" width="16px" src={eye_icon} />
 			</button>
 		</div>
@@ -187,7 +200,7 @@ function SectionComp({ sectionObject, removeCallback }: { sectionObject: Section
 		</div>
 
 		<div className="up-down-flex gap-10">
-			{section.classes.map(c => <ClassComp clasObject={c} removeCallback={_ => classRemove(c)} />)}
+			{section.classes.map(c => <ClassComp visible={isVisible()} clasObject={c} removeCallback={_ => classRemove(c)} />)}
 		</div>
 		<button onClick={classAdd} className="button-analogous-3">+</button>
 	</div>
@@ -210,9 +223,16 @@ function CourseComp({ courseObject, removeCallback }: { courseObject: Course, re
 		setCourse(newCourse)
 	}
 
+	function visibleToggle() {
+		const newCourse: Course = { ...courseObject };
+		courseObject.visible = !courseObject.visible
+		newCourse.visible = newCourse.visible
+		setCourse(newCourse)
+	}
+
 	function newSection() {
 		const newCourse: Course = { ...courseObject };
-		courseObject.sections.push({ code: "", teacher: "", classes: [] })
+		courseObject.sections.push({ code: "", teacher: "", classes: [], visible: true })
 		newCourse.sections = courseObject.sections
 		setCourse(newCourse)
 	}
@@ -224,14 +244,14 @@ function CourseComp({ courseObject, removeCallback }: { courseObject: Course, re
 		setCourse(newCourse)
 	}
 
-	return <div className="up-down-flex gap-10 background-analogous-1 floating-container">
+	return <div className={`${courseObject.visible || "not-used-course"} up-down-flex gap-10 background-analogous-1 floating-container`}>
 		<div className="left-right-flex gap-10">
 			<input value={course.color} onChange={e => colorEdit(e.target.value)} className="color-picker" type="color" />
 			<div className="flexpand left-right-flex write-container">
 				<input value={course.name} onChange={e => courseNameEdit(e.target.value)} placeholder="Course Name" type="text" className="flexpand write-input strong-input" />
 				<img className="svg-icon sides-padding" width="16px" src={edit_icon} />
 			</div>
-			<button className="remove-button" onClick={removeCallback}>
+			<button className="remove-button" onClick={visibleToggle}>
 				<img className="svg-icon" width="16px" src={eye_icon} />
 			</button>
 			<button className="remove-button" onClick={removeCallback}>
@@ -239,7 +259,7 @@ function CourseComp({ courseObject, removeCallback }: { courseObject: Course, re
 			</button>
 		</div>
 		<div className="up-down-flex gap-10">
-			{course.sections.map(s => <SectionComp sectionObject={s} removeCallback={_ => sectionRemove(s)} />)}
+			{course.sections.map(s => <SectionComp visibleOverride={courseObject.visible} sectionObject={s} removeCallback={_ => sectionRemove(s)} />)}
 		</div>
 		<button onClick={newSection} className="button-analogous-2">+</button>
 	</div>
@@ -321,7 +341,7 @@ function App() {
 	const [generated, setGenerated]: [ScheduleSection[][], Function] = React.useState([])
 
 	function newCourse() {
-		const c: Course = { name: "", sections: [], color: "#ffffff" };
+		const c: Course = { name: "", sections: [], color: "#ffffff", visible: true };
 		setCourses(courses.concat([c]));
 	}
 
@@ -332,7 +352,7 @@ function App() {
 	}
 
 	function generate() {
-		const gen = GenerateSchedules(courses, [], [], 0)
+		const gen = GenerateSchedules(courses.filter(c => c.visible), [], [], 0)
 		setGenerated(gen)
 	}
 

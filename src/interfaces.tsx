@@ -10,12 +10,14 @@ interface Section {
 	code: string
 	teacher: string
 	classes: Class[]
+	visible: boolean
 }
 
 interface Course {
 	color: string
 	name: string
 	sections: Section[]
+	visible: boolean
 }
 
 interface ScheduleSection {

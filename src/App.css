@@ -3,7 +3,11 @@
 	--analogous-1: #344955;
 	--analogous-2: #50727B;
 	--analogous-3: #78A083;
-	--error-color: red;
+	--error-color: #EF474F;
+
+	--disabled-1: #888;
+	--disabled-2: #777;
+	--disabled-3: #666;
 }
 
 .main-container {
@@ -37,6 +41,7 @@
 }
 
 .background-analogous-1 {
+	transition: all 500ms;
 	background-color: var(--analogous-1);
 }
 
@@ -66,6 +71,7 @@
 }
 
 .background-analogous-2 {
+	transition: all 500ms;
 	background-color: var(--analogous-2);
 }
 
@@ -261,4 +267,19 @@
 .invalid-class {
 	transition: all 500ms;
 	background: var(--error-color);
+}
+
+.not-used-course {
+	transition: all 500ms;
+	background: var(--disabled-1);
+}
+
+.not-used-section {
+	transition: all 500ms;
+	background: var(--disabled-2);
+}
+
+.not-used-class {
+	transition: all 500ms;
+	background: var(--disabled-3);
 }
