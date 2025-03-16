@@ -253,21 +253,25 @@
 }
 
 .tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
- 
-  /* Position the tooltip text - see examples below! */
-  position: absolute;
-  z-index: 1;
+	transition: opacity 250ms;
+	visibility: hidden;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	padding: 5px 10px;
+	border-radius: 6px;
+
+	/* Position the tooltip text - see examples below! */
+	position: absolute;
+	z-index: 1;
+	pointer-events: none;
+	opacity: 0.0;
 }
 
 .tooltip:hover .tooltiptext {
-  visibility: visible;
+	position: fixed;
+	visibility: visible;
+	opacity: 0.9;
 }
 
 .invalid-class {

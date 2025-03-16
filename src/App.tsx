@@ -12,6 +12,7 @@ import dropdown_icon from "./svg/dropdown-icon.svg";
 import trash_icon from "./svg/trash-icon.svg";
 // @ts-ignore
 import eye_icon from "./svg/eye-icon.svg";
+import useMousePosition from './useMousePosition.tsx';
 
 
 function ClassComp({ visible, clasObject, removeCallback }: { visible: boolean, clasObject: Class, removeCallback: Function }) {
@@ -287,6 +288,15 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 		navigator.clipboard.writeText(res)
 	}
 
+	const [mousePosition, setMousePosition] = React.useState({
+		left: 0,
+		top: 0
+	})
+
+	function handleMouseMove(ev) {
+		setMousePosition({ left: ev.pageX, top: ev.pageY });
+	}
+
 	function sectionsOfDay(index: number) {
 		const clasesToday: Class[] = []
 		const scheduleSections: ScheduleSection[] = []
@@ -302,12 +312,14 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 		if (!clasesToday.length)
 			return <div style={{ "grid-row": "span 144" }} />
 
+
 		return <>
 			{clasesToday.map((c, i) => {
 				const start = ((c.startHour - 6) * 12 + 1 + (c.startMinute) / 5).toString()
 				const end = ((c.endHour - 6) * 12 + 1 + (c.endMinute) / 5).toString()
 				return <div
 					className="schedule-element tooltip"
+					onMouseMove={(ev) => handleMouseMove(ev)}
 					style={{
 						"grid-column-start": (index + 2).toString(),
 						"grid-row-start": start,
@@ -315,10 +327,16 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 						"background": scheduleSections[i].color,
 						"position": "relative"
 					}}>
-					<div className="tooltiptext" >
-						<div>Course: {scheduleSections[i].courseName}</div>
-						<div>Code: {scheduleSections[i].code}</div>
-						<div>Teacher: {scheduleSections[i].teacher}</div>
+					<div
+						className="tooltiptext"
+						style={{
+							top: mousePosition.top + 15,
+							left: mousePosition.left + 15,
+						}}
+					>
+						<div>Course: {scheduleSections[i].courseName || "Not set"}</div>
+						<div>Code: {scheduleSections[i].code || "Not set"}</div>
+						<div>Teacher: {scheduleSections[i].teacher || "Not set"}</div>
 					</div>
 				</div >
 			})}
