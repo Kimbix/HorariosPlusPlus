@@ -113,17 +113,25 @@ function ClassComp({ clasObject, removeCallback }: { clasObject: Class, removeCa
 	}
 
 	function dayEdit(val: String) {
+		const num = Number(val)
+		const newClas: Class = { ...clasObject };
+		clasObject.day = num
+		newClas.day = num
+		setClas(newClas)
+	}
+
+
+	function dayValidate(val: String) {
 		const num = Math.min(Math.max(Number(val), 1), 7)
 		const newClas: Class = { ...clasObject };
 		clasObject.day = num
 		newClas.day = num
 		setClas(newClas)
-
 	}
 
 	return <div className="floating-container background-analogous-3 flex-space-around left-right-flex gap-10">
 		<div className="left-right-flex write-container">
-			<input value={clas.day} onChange={e => dayEdit(e.target.value)} className="max-size-75 write-input" placeholder="Day" />
+			<input value={clas.day} onBlur={e => dayValidate(e.target.value)} onChange={e => dayEdit(e.target.value)} className="max-size-75 write-input" placeholder="Day" />
 			<img className="svg-icon" width="16px" src={dropdown_icon} />
 		</div>
 		<div className="left-right-flex write-container">
@@ -364,9 +372,9 @@ function App() {
 					<button onClick={newCourse} className="button-analogous-1">+</button>
 				</div>
 				<div>
-					<button onClick={generate} >Generate</button>
-					<button onClick={exportConfiguration} >Export Configuration</button>
-					<button onClick={importConfiguration} >Import Configuration</button>
+					<button className="button-analogous-2" onClick={generate} >Generate</button>
+					<button className="button-analogous-2" onClick={exportConfiguration} >Export Configuration</button>
+					<button className="button-analogous-2" onClick={importConfiguration} >Import Configuration</button>
 				</div>
 			</div>
 			<div className="generated-container">
