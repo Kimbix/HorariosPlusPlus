@@ -1,4 +1,5 @@
 interface Class {
+	id: number
 	startHour: number
 	startMinute: number
 	endHour: number

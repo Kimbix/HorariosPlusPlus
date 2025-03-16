@@ -114,18 +114,18 @@ function ClassComp({ visible, clasObject, removeCallback }: { visible: boolean, 
 	return <div className={`${visible || "not-used-class"} ${isValid() || "invalid-class"} floating-container background-analogous-3 flex-space-around left-right-flex gap-10`}>
 		<div className="left-right-flex write-container">
 			<input value={clas.day} onBlur={e => dayValidate(e.target.value)} onChange={e => dayEdit(e.target.value)} className="max-size-75 write-input" placeholder="Day" />
-			<img className="svg-icon" width="16px" src={dropdown_icon} />
+			<img className="svg-icon" width="16px" src={edit_icon} />
 		</div>
 		<div className="left-right-flex write-container">
 			<input value={clas.startHour} onBlur={e => startHourValidate(e.target.value)} onChange={e => startHourEdit(e.target.value)}
 				className="max-size-25 write-input" placeholder="HH" />
 			<input value={clas.startMinute} onBlur={e => startMinuteValidate(e.target.value)} onChange={e => startMinuteEdit(e.target.value)} className="max-size-25 write-input" placeholder="MM" />
-			<img className="svg-icon" width="16px" src={dropdown_icon} />
+			<img className="svg-icon" width="16px" src={edit_icon} />
 		</div>
 		<div className="left-right-flex write-container">
 			<input value={clas.endHour} onBlur={e => endHourValidate(e.target.value)} onChange={e => endHourEdit(e.target.value)} className="max-size-25 write-input" placeholder="HH" />
 			<input value={clas.endMinute} onBlur={e => endMinuteValidate(e.target.value)} onChange={e => endMinuteEdit(e.target.value)} className="max-size-25 write-input" placeholder="MM" />
-			<img className="svg-icon" width="16px" src={dropdown_icon} />
+			<img className="svg-icon" width="16px" src={edit_icon} />
 		</div>
 		<button className="remove-button" onClick={removeCallback} >
 			<img className="svg-icon" width="16px" src={trash_icon} />
@@ -152,7 +152,7 @@ function SectionComp({ visibleOverride, sectionObject, removeCallback }: { visib
 
 	function classAdd() {
 		const newSection: Section = { ...sectionObject };
-		sectionObject.classes.push({ startHour: 0, startMinute: 0, endHour: 0, endMinute: 0, day: 1 })
+		sectionObject.classes.push({ id: Math.round(Math.random() * Number.MAX_SAFE_INTEGER), startHour: 0, startMinute: 0, endHour: 0, endMinute: 0, day: 1 })
 		newSection.classes = sectionObject.classes
 		setSection(newSection)
 	}
@@ -201,7 +201,11 @@ function SectionComp({ visibleOverride, sectionObject, removeCallback }: { visib
 		</div>
 
 		<div className="up-down-flex gap-10">
-			{section.classes.map(c => <ClassComp visible={isVisible()} clasObject={c} removeCallback={_ => classRemove(c)} />)}
+			{section.classes.map((c: Class) =>
+				<span key={c.id}>
+					<ClassComp visible={isVisible()} clasObject={c} removeCallback={_ => classRemove(c)} />
+				</span>
+			)}
 		</div>
 		<button onClick={classAdd} className="button-analogous-3">+</button>
 	</div>
@@ -233,7 +237,7 @@ function CourseComp({ courseObject, removeCallback }: { courseObject: Course, re
 
 	function newSection() {
 		const newCourse: Course = { ...courseObject };
-		courseObject.sections.push({ code: "", teacher: "", classes: [], visible: true })
+		courseObject.sections.push({ code: String(Math.round(Math.random() * 65535)), teacher: "", classes: [], visible: true })
 		newCourse.sections = courseObject.sections
 		setCourse(newCourse)
 	}
@@ -260,7 +264,11 @@ function CourseComp({ courseObject, removeCallback }: { courseObject: Course, re
 			</button>
 		</div>
 		<div className="up-down-flex gap-10">
-			{course.sections.map(s => <SectionComp visibleOverride={courseObject.visible} sectionObject={s} removeCallback={_ => sectionRemove(s)} />)}
+			{course.sections.map((s: Section) =>
+				<span key={s.code}>
+					<SectionComp visibleOverride={courseObject.visible} sectionObject={s} removeCallback={_ => sectionRemove(s)} />
+				</span>
+			)}
 		</div>
 		<button onClick={newSection} className="button-analogous-2">+</button>
 	</div>
@@ -342,14 +350,12 @@ function App() {
 	const [generated, setGenerated]: [ScheduleSection[][], Function] = React.useState([])
 
 	function newCourse() {
-		const c: Course = { name: "", sections: [], color: "#ffffff", visible: true };
+		const c: Course = { name: "New Course " + courses.length, sections: [], color: "#ffffff", visible: true };
 		setCourses(courses.concat([c]));
 	}
 
 	function removeCourse(course: Course) {
-		const newCourses = courses.map(x => x)
-		newCourses.splice(courses.findIndex((v: Course) => v === course), 1)
-		setCourses(newCourses);
+		setCourses(courses.filter(c => c !== course));
 	}
 
 	function generate() {
@@ -371,7 +377,11 @@ function App() {
 		<div className="split-30-70">
 			<div className="up-down-flex background">
 				<div className="up-down-flex scrollable padding-mid gap-10">
-					{courses.map((c: Course) => <CourseComp courseObject={c} removeCallback={_ => removeCourse(c)} />)}
+					{courses.map((c: Course) =>
+						<span key={c.name}>
+							<CourseComp courseObject={c} removeCallback={_ => removeCourse(c)} />
+						</span>
+					)}
 					<button onClick={newCourse} className="button-analogous-1">+</button>
 				</div>
 				<div>
