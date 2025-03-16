@@ -9,7 +9,7 @@ This is a schedule maker that grabs all of your classes and make all of the poss
 
 
 ## Dependencies
-- Bun 1.2.5
+- [Bun](https://bun.sh/) 1.2.5
 
 
 ## Installation
