@@ -1,19 +1,17 @@
 import './App.css';
+
 import React from "react";
 
 import GenerateSchedules from './generate.tsx';
+
 import { Class, Section, Course, ScheduleSection } from './interfaces.tsx';
 
 // @ts-ignore
 import edit_icon from "./svg/edit-icon.svg";
 // @ts-ignore
-import dropdown_icon from "./svg/dropdown-icon.svg";
-// @ts-ignore
 import trash_icon from "./svg/trash-icon.svg";
 // @ts-ignore
 import eye_icon from "./svg/eye-icon.svg";
-import useMousePosition from './useMousePosition.tsx';
-
 
 function ClassComp({ visible, clasObject, removeCallback }: { visible: boolean, clasObject: Class, removeCallback: Function }) {
 	const minHour = 7
@@ -114,18 +112,42 @@ function ClassComp({ visible, clasObject, removeCallback }: { visible: boolean, 
 
 	return <div className={`${visible || "not-used-class"} ${isValid() || "invalid-class"} floating-container background-analogous-3 flex-space-around left-right-flex gap-10`}>
 		<div className="left-right-flex write-container">
-			<input value={clas.day} onBlur={e => dayValidate(e.target.value)} onChange={e => dayEdit(e.target.value)} className="max-size-75 write-input" placeholder="Day" />
+			<input
+				value={clas.day}
+				onBlur={(e: FocusEvent) => dayValidate((e.target as any).value)}
+				onChange={(e: Event) => dayEdit((e.target as any).value)}
+				className="max-size-75 write-input"
+				placeholder="Day" />
 			<img className="svg-icon" width="16px" src={edit_icon} />
 		</div>
 		<div className="left-right-flex write-container">
-			<input value={clas.startHour} onBlur={e => startHourValidate(e.target.value)} onChange={e => startHourEdit(e.target.value)}
-				className="max-size-25 write-input" placeholder="HH" />
-			<input value={clas.startMinute} onBlur={e => startMinuteValidate(e.target.value)} onChange={e => startMinuteEdit(e.target.value)} className="max-size-25 write-input" placeholder="MM" />
+			<input
+				value={clas.startHour}
+				onBlur={(e: FocusEvent) => startHourValidate((e.target as any).value)}
+				onChange={(e: Event) => startHourEdit((e.target as any).value)}
+				className="max-size-25 write-input"
+				placeholder="HH" />
+			<input
+				value={clas.startMinute}
+				onBlur={(e: FocusEvent) => startMinuteValidate((e.target as any).value)}
+				onChange={(e: Event) => startMinuteEdit((e.target as any).value)}
+				className="max-size-25 write-input"
+				placeholder="MM" />
 			<img className="svg-icon" width="16px" src={edit_icon} />
 		</div>
 		<div className="left-right-flex write-container">
-			<input value={clas.endHour} onBlur={e => endHourValidate(e.target.value)} onChange={e => endHourEdit(e.target.value)} className="max-size-25 write-input" placeholder="HH" />
-			<input value={clas.endMinute} onBlur={e => endMinuteValidate(e.target.value)} onChange={e => endMinuteEdit(e.target.value)} className="max-size-25 write-input" placeholder="MM" />
+			<input
+				value={clas.endHour}
+				onBlur={(e: FocusEvent) => endHourValidate((e.target as any).value)}
+				onChange={(e: Event) => endHourEdit((e.target as any).value)}
+				className="max-size-25 write-input"
+				placeholder="HH" />
+			<input
+				value={clas.endMinute}
+				onBlur={(e: FocusEvent) => endMinuteValidate((e.target as any).value)}
+				onChange={(e: Event) => endMinuteEdit((e.target as any).value)}
+				className="max-size-25 write-input"
+				placeholder="MM" />
 			<img className="svg-icon" width="16px" src={edit_icon} />
 		</div>
 		<button className="remove-button" onClick={removeCallback} >
@@ -182,7 +204,12 @@ function SectionComp({ visibleOverride, sectionObject, removeCallback }: { visib
 		<div className="left-right-flex gap-10">
 			<div className="write-container min-size-75"><b>Class Code</b></div>
 			<div className="flexpand left-right-flex write-container">
-				<input value={section.code} onChange={e => codeEdit(e.target.value)} placeholder="Class Code" type="text" className="flexpand write-input" />
+				<input
+					value={section.code}
+					onChange={(e: Event) => codeEdit((e.target as any).value)}
+					placeholder="Class Code"
+					type="text"
+					className="flexpand write-input" />
 				<img className="svg-icon sides-padding" width="16px" src={edit_icon} />
 			</div>
 			<button className="remove-button" onClick={visibleToggle}>
@@ -193,7 +220,12 @@ function SectionComp({ visibleOverride, sectionObject, removeCallback }: { visib
 		<div className="left-right-flex gap-10">
 			<div className="write-container min-size-75"><b>Teacher</b></div>
 			<div className="flexpand left-right-flex write-container">
-				<input value={section.teacher} onChange={e => teacherEdit(e.target.value)} placeholder="Teacher's Name" type="text" className="flexpand write-input" />
+				<input
+					value={section.teacher}
+					onChange={(e: Event) => teacherEdit((e.target as any).value)}
+					placeholder="Teacher's Name"
+					type="text"
+					className="flexpand write-input" />
 				<img className="svg-icon sides-padding" width="16px" src={edit_icon} />
 			</div>
 			<button className="remove-button" onClick={removeCallback}>
@@ -204,7 +236,7 @@ function SectionComp({ visibleOverride, sectionObject, removeCallback }: { visib
 		<div className="up-down-flex gap-10">
 			{section.classes.map((c: Class) =>
 				<span key={c.id}>
-					<ClassComp visible={isVisible()} clasObject={c} removeCallback={_ => classRemove(c)} />
+					<ClassComp visible={isVisible()} clasObject={c} removeCallback={() => classRemove(c)} />
 				</span>
 			)}
 		</div>
@@ -252,9 +284,18 @@ function CourseComp({ courseObject, removeCallback }: { courseObject: Course, re
 
 	return <div className={`${courseObject.visible || "not-used-course"} up-down-flex gap-10 background-analogous-1 floating-container`}>
 		<div className="left-right-flex gap-10">
-			<input value={course.color} onChange={e => colorEdit(e.target.value)} className="color-picker" type="color" />
+			<input
+				value={course.color}
+				onChange={(e: Event) => colorEdit((e.target as any).value)}
+				className="color-picker"
+				type="color" />
 			<div className="flexpand left-right-flex write-container">
-				<input value={course.name} onChange={e => courseNameEdit(e.target.value)} placeholder="Course Name" type="text" className="flexpand write-input strong-input" />
+				<input
+					value={course.name}
+					onChange={(e: Event) => courseNameEdit((e.target as any).value)}
+					placeholder="Course Name"
+					type="text"
+					className="flexpand write-input strong-input" />
 				<img className="svg-icon sides-padding" width="16px" src={edit_icon} />
 			</div>
 			<button className="remove-button" onClick={visibleToggle}>
@@ -267,7 +308,7 @@ function CourseComp({ courseObject, removeCallback }: { courseObject: Course, re
 		<div className="up-down-flex gap-10">
 			{course.sections.map((s: Section) =>
 				<span key={s.code}>
-					<SectionComp visibleOverride={courseObject.visible} sectionObject={s} removeCallback={_ => sectionRemove(s)} />
+					<SectionComp visibleOverride={courseObject.visible} sectionObject={s} removeCallback={() => sectionRemove(s)} />
 				</span>
 			)}
 		</div>
@@ -293,8 +334,8 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 		top: 0
 	})
 
-	function handleMouseMove(ev) {
-		setMousePosition({ left: ev.pageX, top: ev.pageY });
+	function handleMouseMove(e: MouseEvent) {
+		setMousePosition({ left: e.pageX, top: e.pageY });
 	}
 
 	function sectionsOfDay(index: number) {
@@ -319,7 +360,7 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 				const end = ((c.endHour - 6) * 12 + 1 + (c.endMinute) / 5).toString()
 				return <div
 					className="schedule-element tooltip"
-					onMouseMove={(ev) => handleMouseMove(ev)}
+					onMouseMove={(e: MouseEvent) => handleMouseMove(e)}
 					style={{
 						"grid-column-start": (index + 2).toString(),
 						"grid-row-start": start,
@@ -397,7 +438,7 @@ function App() {
 				<div className="up-down-flex scrollable padding-mid gap-10">
 					{courses.map((c: Course) =>
 						<span key={c.name}>
-							<CourseComp courseObject={c} removeCallback={_ => removeCourse(c)} />
+							<CourseComp courseObject={c} removeCallback={() => removeCourse(c)} />
 						</span>
 					)}
 					<button onClick={newCourse} className="button-analogous-1">+</button>
