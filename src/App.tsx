@@ -334,6 +334,11 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 		top: 0
 	})
 
+	function padNumber(n: Number): String {
+		const num = String(n)
+		return String(((num.length == 1 || "") && "0") + num);
+	}
+
 	function handleMouseMove(e: MouseEvent) {
 		setMousePosition({ left: e.pageX, top: e.pageY });
 	}
@@ -378,6 +383,7 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 						<div>Course: {scheduleSections[i].courseName || "Not set"}</div>
 						<div>Code: {scheduleSections[i].code || "Not set"}</div>
 						<div>Teacher: {scheduleSections[i].teacher || "Not set"}</div>
+						<div>{padNumber(c.startHour)}:{padNumber(c.startMinute)} - {padNumber(c.endHour)}:{padNumber(c.endMinute)}</div>
 					</div>
 				</div >
 			})}
@@ -386,8 +392,8 @@ function Schedule({ sections }: { sections: ScheduleSection[] }) {
 
 	return <div className="floating-container background-analogous-2">
 		<div className="schedule">
-			<div style={{ "grid-column-start": "1", "grid-row": "span 12" }}></div>
-			{nums.map(x => <div className="schedule-numbers" style={{ "grid-column-start": "1", "grid-row": "span 12" }}>{x}</div>)}
+			<div className="schedule-start" style={{ "grid-column-start": "1", "grid-row": "span 12" }}> . </div>
+			{nums.map(x => <div className="schedule-numbers" style={{ "grid-column-start": "1", "grid-row": "span 12" }} >{x} </div>)}
 			{
 				days.map((day, dayIndex) =>
 					<>

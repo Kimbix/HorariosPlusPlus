@@ -208,8 +208,16 @@
 	grid-auto-flow: column;
 	grid-template-columns:  repeat(8, 1fr);
 	grid-template-rows:  repeat(180, 0.1fr);
-	border-radius: 15px;
-	padding: 10px;
+	border: solid 3px black;
+}
+
+.schedule-start {
+	background: rgba(255, 255, 255, 0.2);
+}
+
+.schedule-numbers, .schedule-days-even, .schedule-days-odd  {
+	font-weight: bold;
+	text-align: center;
 }
 
 .schedule-numbers:nth-child(2n + 1), .schedule-days-even {
