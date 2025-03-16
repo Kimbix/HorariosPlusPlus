@@ -117,7 +117,8 @@ function ClassComp({ visible, clasObject, removeCallback }: { visible: boolean, 
 			<img className="svg-icon" width="16px" src={dropdown_icon} />
 		</div>
 		<div className="left-right-flex write-container">
-			<input value={clas.startHour} onBlur={e => startHourValidate(e.target.value)} onChange={e => startHourEdit(e.target.value)} className="max-size-25 write-input" placeholder="HH" />
+			<input value={clas.startHour} onBlur={e => startHourValidate(e.target.value)} onChange={e => startHourEdit(e.target.value)}
+				className="max-size-25 write-input" placeholder="HH" />
 			<input value={clas.startMinute} onBlur={e => startMinuteValidate(e.target.value)} onChange={e => startMinuteEdit(e.target.value)} className="max-size-25 write-input" placeholder="MM" />
 			<img className="svg-icon" width="16px" src={dropdown_icon} />
 		</div>

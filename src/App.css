@@ -136,13 +136,18 @@
 }
 
 .write-input {
+	transition: all 250ms;
+	display: inline-block;
 	background: none;
 	border: none;
+	border-radius: 5px 5px 0 0;
 	color: white;
 }
 
-.write-input:focus {
+.write-input:focus, textarea {
 	outline: none;
+	background: white;
+	color: black;
 }
 
 .flexpand {
