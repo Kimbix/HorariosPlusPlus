@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/HorariosPlusPlus/static/css/main.f78ff740.css",
+    "main.js": "/HorariosPlusPlus/static/js/main.9f2a586c.js",
+    "static/js/453.9744dcf4.chunk.js": "/HorariosPlusPlus/static/js/453.9744dcf4.chunk.js",
+    "static/media/eye-icon.svg": "/HorariosPlusPlus/static/media/eye-icon.3767a149dd859e426294fd769b3073d1.svg",
+    "static/media/trash-icon.svg": "/HorariosPlusPlus/static/media/trash-icon.1917536aa74bfa289fd6382f1ba7db6a.svg",
+    "index.html": "/HorariosPlusPlus/index.html",
+    "static/media/edit-icon.svg": "/HorariosPlusPlus/static/media/edit-icon.d933a8ba04aab9e250140c7093041ec6.svg",
+    "main.f78ff740.css.map": "/HorariosPlusPlus/static/css/main.f78ff740.css.map",
+    "main.9f2a586c.js.map": "/HorariosPlusPlus/static/js/main.9f2a586c.js.map",
+    "453.9744dcf4.chunk.js.map": "/HorariosPlusPlus/static/js/453.9744dcf4.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f78ff740.css",
+    "static/js/main.9f2a586c.js"
+  ]
+}
