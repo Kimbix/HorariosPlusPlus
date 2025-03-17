@@ -1,5 +1,30 @@
-# React + TypeScript + Vite
+# HorariosPlusPlus
 
+This is a schedule maker that grabs all of your classes and make all of the possible combinations
+
+## Features
+- Disabling and enabling classes for generation
+- Saving your generated schedule as an Image
+- Exporting and importing classes
+
+
+## Dependencies
+- [Bun](https://bun.sh/) 1.2.5
+
+
+## Installation
+
+```git clone https://github.com/Kimbix/HorariosPlusPlus.git```
+
+```cd HorariosPlusPlus```
+
+```bun install```
+
+```bun run dev```
+
+The proyect will open in [http://localhost:5173/](http://localhost:5173/)
+
+## extra
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
