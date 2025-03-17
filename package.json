@@ -1,6 +1,7 @@
 {
   "name": "horarios-plus-plus",
   "version": "0.1.0",
+  "homepage": "https://kimbix.github.io/HorariosPlusPlus",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
@@ -9,14 +10,17 @@
     "@testing-library/user-event": "^13.5.0",
     "dom-to-image": "^2.6.0",
     "file-saver": "^2.0.5",
+    "gh-pages": "^6.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "bun run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
