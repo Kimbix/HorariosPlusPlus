@@ -194,7 +194,7 @@ function SectionComp({ visibleOverride, sectionObject, removeCallback }: { visib
 	}
 
 	function visibleToggle() {
-		if (visibleOverride == false) return;
+		if (visibleOverride === false) return;
 		const newSection: Section = { ...sectionObject };
 		sectionObject.visible = !sectionObject.visible
 		newSection.visible = newSection.visible
@@ -202,7 +202,7 @@ function SectionComp({ visibleOverride, sectionObject, removeCallback }: { visib
 	}
 
 	function isVisible() {
-		if (visibleOverride == false) return false
+		if (visibleOverride === false) return false
 		return sectionObject.visible
 	}
 
@@ -349,7 +349,7 @@ function Schedule({ id, sections }: { id: number, sections: ScheduleSection[] })
 
 	function padNumber(n: Number): String {
 		const num = String(n)
-		return String(((num.length == 1 || "") && "0") + num);
+		return String(((num.length === 1 || "") && "0") + num);
 	}
 
 	function handleMouseMove(e: MouseEvent) {
@@ -443,12 +443,13 @@ function App() {
 	}
 
 	function exportConfiguration() {
-		navigator.clipboard.writeText(JSON.stringify(courses))
+		const compressed = window.btoa(JSON.stringify(courses))
+		navigator.clipboard.writeText(compressed)
 	}
 
 	function importConfiguration() {
 		const courses: string = prompt("Paste the configuration json") ?? "[]"
-		const coursesObject: Course[] = JSON.parse(courses)
+		const coursesObject: Course[] = JSON.parse(atob(courses))
 		setCourses(coursesObject)
 	}
 
