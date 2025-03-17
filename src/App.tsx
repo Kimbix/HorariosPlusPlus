@@ -443,12 +443,13 @@ function App() {
 	}
 
 	function exportConfiguration() {
-		navigator.clipboard.writeText(JSON.stringify(courses))
+		const compressed = window.btoa(JSON.stringify(courses))
+		navigator.clipboard.writeText(compressed)
 	}
 
 	function importConfiguration() {
 		const courses: string = prompt("Paste the configuration json") ?? "[]"
-		const coursesObject: Course[] = JSON.parse(courses)
+		const coursesObject: Course[] = JSON.parse(atob(courses))
 		setCourses(coursesObject)
 	}
 
