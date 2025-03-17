@@ -37,4 +37,4 @@ jobs:
         run: PATH="${PATH}:~/.bun/bin" bun install
 
       - name: Deploy the site
-        run: PATH="${PATH}:~/.bun/bin" bun run reploy
+        run: PATH="${PATH}:~/.bun/bin" bun run deploy
